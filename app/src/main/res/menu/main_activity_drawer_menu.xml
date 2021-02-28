@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/drawer_menu_profile"
+        android:title="Profile"/>
 
+    <item
+        android:id="@+id/drawer_menu_lists"
+        android:title="Lists"/>
+
+    <item
+        android:id="@+id/drawer_menu_discover"
+        android:title="Discover"/>
 </menu>
