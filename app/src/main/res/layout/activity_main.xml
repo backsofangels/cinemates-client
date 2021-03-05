@@ -6,8 +6,15 @@
     android:id="@+id/mainActivityDrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-
+    <com.google.android.material.navigation.NavigationView
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:id="@+id/mainActivityNavigationView"
+        app:menu="@menu/main_activity_drawer_menu"
+        android:layout_gravity="start"
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>
