@@ -7,3 +7,23 @@ i
 9app/src/main/java/com/salvatore/cinemates/MainActivity.kt,f\a\faa3abc6ed6295e6b0a8b9a87f2aa5473bda80f5
 r
 Bapp/src/main/java/com/salvatore/cinemates/view/DiscoverFragment.kt,9\c\9cdfdb3289a01407c5bf44006492ee80e7d445b1
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+h
+8app/src/main/java/com/salvatore/cinemates/model/Movie.kt,8\2\82b736d98af16d4591bbeadf8d41f7fcab23cbee
+u
+Eapp/src/main/java/com/salvatore/cinemates/network/SearchApiService.kt,c\8\c8141ce7ebaa4a7688008c25e9b3709d38973a7c
+v
+Fapp/src/main/java/com/salvatore/cinemates/network/NetworkApiService.kt,e\3\e36afe635763741c3f45c4fd66b32e451ed19447
+u
+Eapp/src/main/java/com/salvatore/cinemates/network/NetworkConstants.kt,0\b\0bd90625c2157b47c1b7add1e3d37ae062df487f
+x
+Happ/src/main/java/com/salvatore/cinemates/network/SearchApiController.kt,5\a\5ab650ed679c75f4c906ae3ae10459af2bcb5403
+x
+Happ/src/main/java/com/salvatore/cinemates/network/NetworkClientHelper.kt,4\b\4baf7c0ce00b70181961924a439116cfbe8dde39
+w
+Gapp/src/main/java/com/salvatore/cinemates/model/MovieSearchResultDto.kt,f\5\f5ac2a1599a7b9f47fdedb3792e94886e381b7a4
+€
+Papp/src/main/java/com/salvatore/cinemates/view/MovieSearchRecyclerViewAdapter.kt,d\2\d24c053d014169f1624f735304650e6657f1de18
+ƒ
+Sapp/src/main/java/com/salvatore/cinemates/view/MovieSearchRecyclerViewViewHolder.kt,c\b\cb6250dc1f50c88012c3110a4bccd2db6f27856e
