@@ -9,6 +9,7 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.salvatore.cinemates.MainActivity
 import com.salvatore.cinemates.R
 import com.salvatore.cinemates.databinding.FragmentDiscoverBinding
 import com.salvatore.cinemates.model.MovieSearchResultDto
@@ -20,9 +21,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class DiscoverFragment: Fragment(R.layout.fragment_discover) {
     private var _binding: FragmentDiscoverBinding? = null
     private val binding get() = _binding!!
-    private var recyclerViewAdapter: MovieSearchRecyclerViewAdapter = MovieSearchRecyclerViewAdapter(
-        ArrayList()
-    )
+    private var recyclerViewAdapter: MovieSearchRecyclerViewAdapter? = null
     private val TAG = "DiscoverFragment"
 
     override fun onCreateView(
@@ -31,6 +30,9 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDiscoverBinding.inflate(inflater, container, false)
+        this.recyclerViewAdapter = MovieSearchRecyclerViewAdapter(
+                ArrayList(), this.requireActivity() as MainActivity
+        )
         return binding.root
     }
 
@@ -50,7 +52,7 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover) {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
                                 networkResponse -> run {
-                                    this@DiscoverFragment.recyclerViewAdapter.updateDataset(networkResponse)
+                                    this@DiscoverFragment.recyclerViewAdapter!!.updateDataset(networkResponse)
                                 }
                         }, {
                             error -> Log.e(TAG, error.message!!)
