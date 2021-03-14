@@ -27,3 +27,5 @@ Gapp/src/main/java/com/salvatore/cinemates/model/MovieSearchResultDto.kt,f\5\f5
 Papp/src/main/java/com/salvatore/cinemates/view/MovieSearchRecyclerViewAdapter.kt,d\2\d24c053d014169f1624f735304650e6657f1de18
 ƒ
 Sapp/src/main/java/com/salvatore/cinemates/view/MovieSearchRecyclerViewViewHolder.kt,c\b\cb6250dc1f50c88012c3110a4bccd2db6f27856e
+u
+Eapp/src/main/java/com/salvatore/cinemates/view/MovieDetailFragment.kt,c\f\cf2f1fc8a2b9083eb6d81da0e8940e99ce9bf2dd
