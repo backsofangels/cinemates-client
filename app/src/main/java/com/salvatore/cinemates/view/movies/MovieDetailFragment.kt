@@ -1,15 +1,13 @@
-package com.salvatore.cinemates.view
+package com.salvatore.cinemates.view.movies
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.salvatore.cinemates.R
-import com.salvatore.cinemates.databinding.FragmentDiscoverBinding
 import com.salvatore.cinemates.databinding.FragmentMovieDetailBinding
 import com.salvatore.cinemates.model.Movie
 import com.salvatore.cinemates.network.NetworkApiService
@@ -32,7 +30,7 @@ class MovieDetailFragment: Fragment(R.layout.fragment_movie_detail) {
         if (arguments != null && arguments!!.containsKey("tmdbId")) {
             Log.d(TAG, "savedInstanceState not null")
             var tmdbMovieId = arguments!!.getInt("tmdbId")
-            val movieDetailsObservable = NetworkApiService.searchApiCall().getDetailsForMovie(tmdbMovieId)
+            val movieDetailsObservable = NetworkApiService.apiCall().getDetailsForMovie(tmdbMovieId)
             movieDetailsObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({

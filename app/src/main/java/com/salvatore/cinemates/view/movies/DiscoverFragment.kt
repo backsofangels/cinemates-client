@@ -1,4 +1,4 @@
-package com.salvatore.cinemates.view
+package com.salvatore.cinemates.view.movies
 
 import android.os.Bundle
 import android.util.Log
@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.salvatore.cinemates.MainActivity
 import com.salvatore.cinemates.R
 import com.salvatore.cinemates.databinding.FragmentDiscoverBinding
-import com.salvatore.cinemates.model.MovieSearchResultDto
 import com.salvatore.cinemates.network.NetworkApiService
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -47,7 +45,7 @@ class DiscoverFragment: Fragment(R.layout.fragment_discover) {
                     if (query.isNullOrBlank()) {
                         return false
                     }
-                    val observable = NetworkApiService.searchApiCall().searchMovieByTitle(query)
+                    val observable = NetworkApiService.apiCall().searchMovieByTitle(query)
                     observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({

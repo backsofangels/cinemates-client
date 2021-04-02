@@ -5,4 +5,6 @@ object NetworkConstants {
     const val BASE_TMDB_URL = ""
     const val MOVIE_SEARCH = "/search/movie"
     const val MOVIE_DETAILS = "/movie/details"
+    const val USER_LOGIN = "/auth/login"
+    const val USER_SIGNUP = "/auth/signup"
 }

@@ -1,11 +1,10 @@
-package com.salvatore.cinemates.view
+package com.salvatore.cinemates.view.movies
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.salvatore.cinemates.MainActivity
