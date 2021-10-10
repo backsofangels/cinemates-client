@@ -1,51 +1,55 @@
 package com.salvatore.cinemates
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.navigation.NavigationView
-import com.salvatore.cinemates.view.DiscoverFragment
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.salvatore.cinemates.databinding.ActivityMainBinding
+import com.salvatore.cinemates.model.CinematesUser
+import com.salvatore.cinemates.view.movies.DiscoverFragment
+import com.salvatore.cinemates.view.auth.UserAuthLoginFragment
+import com.salvatore.cinemates.view.auth.UserProfileFragment
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var drawerLayout: DrawerLayout
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
-    private lateinit var navigationView: NavigationView
-    private var TAG = MainActivity::class.java.simpleName
+    private var TAG = "MainActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        drawerLayout = findViewById(R.id.mainActivityDrawerLayout)
-        actionBarDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, 0, 0)
-        drawerLayout.addDrawerListener(actionBarDrawerToggle)
-
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        actionBarDrawerToggle = ActionBarDrawerToggle(this, this.binding.mainActivityDrawerLayout, 0, 0)
+        this.binding.mainActivityDrawerLayout.addDrawerListener(actionBarDrawerToggle)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         actionBarDrawerToggle.syncState()
-
-        navigationView = findViewById(R.id.mainActivityNavigationView)
-
-        navigationView.setNavigationItemSelectedListener { menuItem ->
+        this.binding.mainActivityNavigationView.setNavigationItemSelectedListener { menuItem ->
             var fragment: Fragment? = null
-
             when(menuItem.itemId) {
                 R.id.drawer_menu_profile -> {
-                    Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
-                    this.drawerLayout.closeDrawers()
+                    if (checkFieldAlreadyPresentInPrefs("userInfo")) {
+                        Log.d(TAG, "Instantiating ProfileFragment")
+                        fragment = UserProfileFragment()
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.fragmentsPlaceholderView, fragment)
+                        fragmentTransaction.commit()
+                    } else {
+                        Log.d(TAG, "Instantiating LoginFragment")
+                        fragment = UserAuthLoginFragment()
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.fragmentsPlaceholderView, fragment)
+                        fragmentTransaction.commit()
+                    }
+                    this.binding.mainActivityDrawerLayout.closeDrawers()
                     true
                 }
                 R.id.drawer_menu_discover -> {
@@ -53,14 +57,14 @@ class MainActivity : AppCompatActivity() {
                     fragment = DiscoverFragment()
                     val fragmentTransaction = supportFragmentManager.beginTransaction()
                     Log.d(TAG, "beginning transaction to fragment")
-                    fragmentTransaction.add(R.id.mainActivityDrawerLayout, fragment)
+                    fragmentTransaction.replace(R.id.fragmentsPlaceholderView, fragment)
                     fragmentTransaction.commit()
-                    this.drawerLayout.closeDrawers()
+                    this.binding.mainActivityDrawerLayout.closeDrawers()
                     true
                 }
                 R.id.drawer_menu_lists -> {
                     Toast.makeText(this, "Lists", Toast.LENGTH_SHORT).show()
-                    this.drawerLayout.closeDrawers()
+                    this.binding.mainActivityDrawerLayout.closeDrawers()
                     true
                 }
                 else -> {
@@ -71,15 +75,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            this.drawerLayout.closeDrawer(GravityCompat.START)
-        } else drawerLayout.openDrawer(navigationView)
+        if (this.binding.mainActivityDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.binding.mainActivityDrawerLayout.closeDrawer(GravityCompat.START)
+        } else this.binding.mainActivityDrawerLayout.openDrawer(this.binding.mainActivityNavigationView)
         return true
     }
 
     override fun onBackPressed() {
-        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            this.drawerLayout.closeDrawer(GravityCompat.START)
+        if (this.binding.mainActivityDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.binding.mainActivityDrawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -92,5 +96,37 @@ class MainActivity : AppCompatActivity() {
             view = View(activity)
         }
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun saveUserInfoInSharedPrefs(user: CinematesUser) {
+        val sharedPrefs = this.getPreferences(Context.MODE_PRIVATE)
+        val jsonMapper = ObjectMapper()
+        if (!sharedPrefs.contains("userInfo") ) {
+            Log.d(TAG, "Saving user info in prefs")
+            sharedPrefs.edit().putString("userInfo", jsonMapper.writeValueAsString(user)).apply()
+        } else {
+            Log.d(TAG, "Clearing prefs")
+            sharedPrefs.edit().remove("userInfo").apply()
+            Log.d(TAG, "Saving user info in prefs")
+            sharedPrefs.edit().putString("userInfo", jsonMapper.writeValueAsString(user)).apply()
+        }
+    }
+
+    fun saveJwtTokenInPrefs(token: String) {
+        val sharedPrefs = this.getPreferences(Context.MODE_PRIVATE)
+        if (!sharedPrefs.contains("authToken")) {
+            Log.d(TAG, "Saving token $token")
+            sharedPrefs.edit().putString("authToken", token).apply()
+        } else {
+            Log.d(TAG, "Clearing already present token")
+            sharedPrefs.edit().remove("authToken").apply()
+            Log.d(TAG, "Saving new token $token")
+            sharedPrefs.edit().putString("authToken", token).apply()
+        }
+    }
+
+    //Why i did this?
+    fun checkFieldAlreadyPresentInPrefs(fieldName: String): Boolean {
+        return this.getPreferences(Context.MODE_PRIVATE).contains(fieldName)
     }
 }
